@@ -1,49 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Typography, Grid } from "@mui/material";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 import VideoCard from "./VideoCard";
 
-
 const VideoDetail = () => {
   const { id } = useParams();
   const [videoDetail, setVideoDetail] = useState(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
-  const [status, setStatus] = useState({ loading: true, error: null });
-
 
   useEffect(() => {
-    let mounted = true;
-
-    setStatus({ loading: true, error: null });
-
-    Promise.all([
-      fetchFromAPI(`videos?part=snippet,statistics&id=${id}`),
-      fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video`),
-    ])
-      .then(([detailData, relatedData]) => {
-        if (!mounted) return;
-        setVideoDetail(detailData?.items?.[0] ?? null);
-        setRelatedVideos(Array.isArray(relatedData?.items) ? relatedData.items : []);
-        setStatus({ loading: false, error: null });
-      })
-      .catch((err) => {
-        console.error(err);
-        if (!mounted) return;
-        setStatus({ loading: false, error: "Failed to load video." });
-      });
-
-    return () => {
-      mounted = false;
-    };
+    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then((data) =>
+      setVideoDetail(data.items[0])
+    );
+    fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video`).then(
+      (data) => setRelatedVideos(data.items)
+    );
   }, [id]);
 
-  if (status.loading) return <Typography color="white">Loading...</Typography>;
-  if (status.error)
-    return <Typography color="white">{status.error}</Typography>;
-  if (!videoDetail)
-    return <Typography color="white">Video not found.</Typography>;
-
+  if (!videoDetail) return <Typography color="white">Loading...</Typography>;
 
   return (
     <Box p={2} sx={{ color: "white" }}>
@@ -60,9 +35,8 @@ const VideoDetail = () => {
           {videoDetail.snippet.title}
         </Typography>
         <Typography variant="subtitle1" color="gray">
-          {videoDetail.snippet.channelTitle} • {videoDetail.statistics?.viewCount ?? 0} views
+          {videoDetail.snippet.channelTitle} • {videoDetail.statistics.viewCount} views
         </Typography>
-
       </Box>
 
       <Typography variant="h6" mb={2}>Related Videos</Typography>
