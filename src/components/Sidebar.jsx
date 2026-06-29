@@ -1,33 +1,36 @@
 import React, { useState } from "react";
-import { Box, Button } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
 const Sidebar = () => {
-  // State to track open/closed
   const [isOpen, setIsOpen] = useState(true);
 
   return (
     <Box
       sx={{
-        width: isOpen ? 240 : 60,   // collapse width
+        width: {
+          xs: isOpen ? "70%" : "0px",   // mobile
+          sm: isOpen ? 240 : 60,        // tablet/desktop
+        },
         height: "100vh",
         bgcolor: "#181818",
         color: "white",
         transition: "width 0.3s ease",
         overflow: "hidden",
+        position: "fixed",
+        top: 0,
+        left: 0,
+        zIndex: 1200,
       }}
     >
       {/* Toggle button */}
-      <Button
+      <IconButton
         onClick={() => setIsOpen(!isOpen)}
-        sx={{
-          color: "white",
-          width: "100%",
-          justifyContent: "flex-start",
-          textTransform: "none",
-        }}
+        sx={{ color: "white", m: 1 }}
       >
-        {isOpen ? "Collapse ◀" : "Expand ▶"}
-      </Button>
+        {isOpen ? <ChevronLeftIcon /> : <MenuIcon />}
+      </IconButton>
 
       {/* Sidebar content */}
       <Box sx={{ p: 2 }}>
