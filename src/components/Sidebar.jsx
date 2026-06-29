@@ -3,8 +3,12 @@ import { Box, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 
-const Sidebar = ({ setQuery, query }) => {
+const Sidebar = ({ setQuery }) => {
   const [isOpen, setIsOpen] = useState(true);
+
+  const handleClick = (value) => {
+    setQuery(value);
+  };
 
   return (
     <Box
@@ -28,13 +32,13 @@ const Sidebar = ({ setQuery, query }) => {
       <Box sx={{ p: 2 }}>
         {isOpen ? (
           <>
-            <p style={{ cursor: "pointer" }} onClick={() => setQuery("home")}>Home</p>
-            <p style={{ cursor: "pointer" }} onClick={() => setQuery("trending")}>Trending</p>
+            <p style={{ cursor: "pointer" }} onClick={() => handleClick("home")}>Home</p>
+            <p style={{ cursor: "pointer" }} onClick={() => handleClick("trending")}>Trending</p>
           </>
         ) : (
           <>
-            <p style={{ cursor: "pointer" }} onClick={() => setQuery("home")}>🏠</p>
-            <p style={{ cursor: "pointer" }} onClick={() => setQuery("trending")}>🔥</p>
+            <p style={{ cursor: "pointer" }} onClick={() => handleClick("home")}>🏠</p>
+            <p style={{ cursor: "pointer" }} onClick={() => handleClick("trending")}>🔥</p>
           </>
         )}
       </Box>
