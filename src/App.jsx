@@ -5,6 +5,7 @@ import sampleVideos from "./sampleVideos";
 function App() {
   const [videos, setVideos] = useState(sampleVideos);
   const [query, setQuery] = useState("");
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   const fetchVideos = async (searchQuery) => {
     try {
@@ -15,7 +16,6 @@ function App() {
 
       if (data.error) {
         console.warn("API quota exceeded or error:", data.error.message);
-        // fallback: filter hard-coded videos
         const filtered = sampleVideos.filter((v) =>
           v.title.toLowerCase().includes(searchQuery.toLowerCase())
         );
@@ -37,7 +37,7 @@ function App() {
     if (query.trim()) {
       fetchVideos(query);
     } else {
-      setVideos(sampleVideos); // reset to all
+      setVideos(sampleVideos);
     }
   };
 
@@ -45,7 +45,7 @@ function App() {
     <div style={{ display: "flex" }}>
       <Sidebar setQuery={setQuery} />
       <div style={{ flex: 1, padding: "20px", background: "#121212", color: "white", marginLeft: "60px" }}>
-        <h1>YouTube Clone (Always Results)</h1>
+        <h1>YouTube Clone (Playable Fallback)</h1>
 
         {/* Search bar */}
         <form onSubmit={handleSearch} style={{ marginBottom: "20px" }}>
@@ -76,10 +76,35 @@ function App() {
           </button>
         </form>
 
+        {/* Video player */}
+        {selectedVideo && (
+          <div style={{ marginBottom: "20px" }}>
+            <iframe
+              width="100%"
+              height="400"
+              src={`https://www.youtube.com/embed/${selectedVideo}`}
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+            <button
+              onClick={() => setSelectedVideo(null)}
+              style={{ marginTop: "10px", padding: "8px" }}
+            >
+              Close Player
+            </button>
+          </div>
+        )}
+
         {/* Video list */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: "20px" }}>
           {videos.map((video) => (
-            <div key={video.id.videoId || video.id} style={{ background: "#1f1f1f", padding: "10px", borderRadius: "8px" }}>
+            <div
+              key={video.id.videoId || video.id}
+              style={{ background: "#1f1f1f", padding: "10px", borderRadius: "8px", cursor: "pointer" }}
+              onClick={() => setSelectedVideo(video.id.videoId || video.id)}
+            >
               <img
                 src={video.snippet ? video.snippet.thumbnails.medium.url : video.thumbnail}
                 alt={video.snippet ? video.snippet.title : video.title}
