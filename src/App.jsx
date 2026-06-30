@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import sampleVideos from "./sampleVideos";
 import "./App.css";
 import Sidebar from "./components/Sidebar";
+import Home from "./pages/Home";
+import Watch from "./pages/Watch";
 
 // Material UI icons
 import MenuIcon from "@mui/icons-material/Menu";
@@ -14,8 +17,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 function App() {
   const [videos, setVideos] = useState(sampleVideos);
   const [query, setQuery] = useState("");
-  const [selectedVideo, setSelectedVideo] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const navigate = useNavigate();
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -27,6 +30,13 @@ function App() {
     } else {
       setVideos(sampleVideos);
     }
+    navigate("/"); // Redirect to home feed if searching
+  };
+
+  const handleLogoClick = () => {
+    setVideos(sampleVideos);
+    setQuery("");
+    navigate("/");
   };
 
   return (
@@ -38,7 +48,9 @@ function App() {
             style={{ color: "white", marginRight: "20px", cursor: "pointer" }}
             onClick={() => setSidebarOpen(!sidebarOpen)}
           />
-          <div className="navbar-logo">YouTube</div>
+          <div className="navbar-logo" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+            YouTube
+          </div>
         </div>
         <div className="navbar-center">
           <form className="search-bar" onSubmit={handleSearch}>
@@ -64,55 +76,16 @@ function App() {
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} />
 
-      {/* Content wrapper (category bar + videos) */}
+      {/* Content wrapper containing routes */}
       <div className="content-wrapper" style={{ marginLeft: sidebarOpen ? "240px" : "72px" }}>
-        {/* Horizontal Category Bar */}
-        <div className="category-bar">
-          <span className="category">All</span>
-          <span className="category">Music</span>
-          <span className="category">Gaming</span>
-          <span className="category">Movies</span>
-          <span className="category">News</span>
-          <span className="category">Live</span>
-          <span className="category">AI</span>
-          <span className="category">Laptop</span>
-        </div>
-
-        {/* Video Player */}
-        {selectedVideo && (
-          <div className="player">
-            <iframe
-              width="100%"
-              height="400"
-              src={`https://www.youtube.com/embed/${selectedVideo}`}
-              title="YouTube video player"
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-            <button onClick={() => setSelectedVideo(null)}>Close Player</button>
-          </div>
-        )}
-
-        {/* Video Grid */}
-        <div className="video-grid">
-          {videos.map((video) => (
-            <div
-              key={video.id}
-              className="video-card"
-              onClick={() => setSelectedVideo(video.id)}
-            >
-              <img src={video.thumbnail} alt={video.title} />
-              <div className="video-info">
-                <div className="video-title">{video.title}</div>
-                <div className="video-meta">{video.channelTitle}</div>
-              </div>
-            </div>
-          ))}
-        </div>
+        <Routes>
+          <Route path="/" element={<Home videos={videos} />} />
+          <Route path="/watch/:id" element={<Watch />} />
+        </Routes>
       </div>
     </>
   );
 }
 
 export default App;
+

@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import HomeIcon from "@mui/icons-material/Home";
 import WhatshotIcon from "@mui/icons-material/Whatshot";
 import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
@@ -9,9 +10,17 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import DownloadIcon from "@mui/icons-material/Download";
 
 const Sidebar = ({ sidebarOpen }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="sidebar" style={{ width: sidebarOpen ? "240px" : "72px" }}>
-      <div className="sidebar-item"><HomeIcon /> {sidebarOpen && <span>Home</span>}</div>
+      <div
+        className="sidebar-item"
+        onClick={() => navigate("/")}
+        style={{ cursor: "pointer" }}
+      >
+        <HomeIcon /> {sidebarOpen && <span>Home</span>}
+      </div>
       <div className="sidebar-item"><WhatshotIcon /> {sidebarOpen && <span>Trending</span>}</div>
       <div className="sidebar-item"><SubscriptionsIcon /> {sidebarOpen && <span>Subscriptions</span>}</div>
       <div className="sidebar-item"><VideoLibraryIcon /> {sidebarOpen && <span>Library</span>}</div>
@@ -24,3 +33,4 @@ const Sidebar = ({ sidebarOpen }) => {
 };
 
 export default Sidebar;
+
