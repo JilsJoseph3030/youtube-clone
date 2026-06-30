@@ -45,6 +45,9 @@ body {
   background-color: #202020;
   padding: 8px;
   white-space: nowrap;
+  position: sticky;
+  top: 48px; /* stays under navbar */
+  z-index: 900;
 }
 
 .category {
@@ -55,6 +58,10 @@ body {
   border-radius: 16px;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+.category:hover {
+  background-color: #555;
 }
 
 .sidebar {
@@ -79,7 +86,8 @@ body {
   margin-left: 16px;
 }
 
-.main-content {
+.content-wrapper {
+  transition: margin-left 0.3s ease;
   padding: 20px;
 }
 
@@ -88,6 +96,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 20px;
   overflow-y: auto;
+  padding-bottom: 60px;
 }
 
 .video-card {

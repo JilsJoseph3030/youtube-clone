@@ -61,23 +61,24 @@ function App() {
         </div>
       </div>
 
-      {/* Horizontal Category Bar */}
-      <div className="category-bar">
-        <span className="category">All</span>
-        <span className="category">Music</span>
-        <span className="category">Gaming</span>
-        <span className="category">Movies</span>
-        <span className="category">News</span>
-        <span className="category">Live</span>
-        <span className="category">AI</span>
-        <span className="category">Laptop</span>
-      </div>
-
       {/* Sidebar */}
       <Sidebar sidebarOpen={sidebarOpen} />
 
-      {/* Main Content */}
-      <div className="main-content" style={{ marginLeft: sidebarOpen ? "240px" : "72px" }}>
+      {/* Content wrapper (category bar + videos) */}
+      <div className="content-wrapper" style={{ marginLeft: sidebarOpen ? "240px" : "72px" }}>
+        {/* Horizontal Category Bar */}
+        <div className="category-bar">
+          <span className="category">All</span>
+          <span className="category">Music</span>
+          <span className="category">Gaming</span>
+          <span className="category">Movies</span>
+          <span className="category">News</span>
+          <span className="category">Live</span>
+          <span className="category">AI</span>
+          <span className="category">Laptop</span>
+        </div>
+
+        {/* Video Player */}
         {selectedVideo && (
           <div className="player">
             <iframe
