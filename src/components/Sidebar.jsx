@@ -1,48 +1,25 @@
-import React, { useState } from "react";
-import { Box, IconButton } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import React from "react";
+import HomeIcon from "@mui/icons-material/Home";
+import WhatshotIcon from "@mui/icons-material/Whatshot";
+import SubscriptionsIcon from "@mui/icons-material/Subscriptions";
+import VideoLibraryIcon from "@mui/icons-material/VideoLibrary";
+import HistoryIcon from "@mui/icons-material/History";
+import PlaylistPlayIcon from "@mui/icons-material/PlaylistPlay";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import DownloadIcon from "@mui/icons-material/Download";
 
-const Sidebar = ({ setQuery }) => {
-  const [isOpen, setIsOpen] = useState(true);
-
-  const handleClick = (value) => {
-    setQuery(value);
-  };
-
+const Sidebar = ({ sidebarOpen }) => {
   return (
-    <Box
-      sx={{
-        width: isOpen ? 200 : 60,
-        height: "100vh",
-        bgcolor: "#181818",
-        color: "white",
-        transition: "width 0.3s ease",
-        overflow: "hidden",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: 1200,
-      }}
-    >
-      <IconButton onClick={() => setIsOpen(!isOpen)} sx={{ color: "white", m: 1 }}>
-        {isOpen ? <ChevronLeftIcon /> : <MenuIcon />}
-      </IconButton>
-
-      <Box sx={{ p: 2 }}>
-        {isOpen ? (
-          <>
-            <p style={{ cursor: "pointer" }} onClick={() => handleClick("home")}>Home</p>
-            <p style={{ cursor: "pointer" }} onClick={() => handleClick("trending")}>Trending</p>
-          </>
-        ) : (
-          <>
-            <p style={{ cursor: "pointer" }} onClick={() => handleClick("home")}>🏠</p>
-            <p style={{ cursor: "pointer" }} onClick={() => handleClick("trending")}>🔥</p>
-          </>
-        )}
-      </Box>
-    </Box>
+    <div className="sidebar" style={{ width: sidebarOpen ? "240px" : "72px" }}>
+      <div className="sidebar-item"><HomeIcon /> {sidebarOpen && <span>Home</span>}</div>
+      <div className="sidebar-item"><WhatshotIcon /> {sidebarOpen && <span>Trending</span>}</div>
+      <div className="sidebar-item"><SubscriptionsIcon /> {sidebarOpen && <span>Subscriptions</span>}</div>
+      <div className="sidebar-item"><VideoLibraryIcon /> {sidebarOpen && <span>Library</span>}</div>
+      <div className="sidebar-item"><HistoryIcon /> {sidebarOpen && <span>History</span>}</div>
+      <div className="sidebar-item"><PlaylistPlayIcon /> {sidebarOpen && <span>Playlists</span>}</div>
+      <div className="sidebar-item"><ThumbUpIcon /> {sidebarOpen && <span>Liked videos</span>}</div>
+      <div className="sidebar-item"><DownloadIcon /> {sidebarOpen && <span>Downloads</span>}</div>
+    </div>
   );
 };
 
